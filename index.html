@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="背单词">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0f0f23">
+<meta name="description" content="四级/六级/考研词库 · 多种背词模式 · AI记忆曲线">
+<title>邪王真翔的背单词小工具</title>
+
+<link rel="icon" type="image/x-icon" href="static/favicon.ico">
+<link rel="shortcut icon" type="image/x-icon" href="static/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="static/icons/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="120x120" href="static/icons/apple-touch-icon-120.png">
+<link rel="apple-touch-icon" sizes="152x152" href="static/icons/apple-touch-icon-152.png">
+<link rel="apple-touch-icon" sizes="167x167" href="static/icons/apple-touch-icon-167.png">
+<link rel="manifest" href="manifest.json">
+<meta name="msapplication-TileColor" content="#0f0f23">
+<meta name="msapplication-TileImage" content="static/icons/icon-144.png">
+
+<link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div id="loading-screen">
+  <div class="loading-container">
+    <span class="loading-icon">📖</span>
+    <h1>邪王真翔</h1>
+    <p>背单词小工具</p>
+    <div class="progress-bar mt-16" style="width:200px">
+      <div class="progress-fill" id="loading-progress" style="width:0%"></div>
+    </div>
+    <p id="loading-status" class="text-dim mt-8" style="font-size:13px">正在初始化...</p>
+  </div>
+</div>
+
+<!-- App -->
+<div id="app" style="display:none;flex-direction:column;min-height:100dvh">
+
+  <!-- Welcome (first use) -->
+  <div id="welcome-page" class="page">
+    <div class="auth-container">
+      <div class="auth-logo">
+        <span class="logo-icon">📖</span>
+        <h1>邪王真翔</h1>
+        <p>背单词小工具</p>
+      </div>
+      <div style="width:100%">
+        <p class="text-center text-dim mb-8" style="font-size:13px">输入昵称开始使用，数据保存在本机</p>
+        <input type="text" id="reg-name" placeholder="你的昵称 (2-20字符)" class="auth-form active" style="display:flex;padding:14px 16px;border-radius:8px;background:var(--bg-input);border:1px solid transparent;width:100%;margin-bottom:12px">
+        <button id="btn-register" class="btn-primary" style="width:100%">开 始 使 用</button>
+        <div id="reg-error" class="error-msg"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main App -->
+  <div id="main-page" class="page">
+    <header class="app-header">
+      <h1 class="app-title">邪王真翔の背单词</h1>
+      <div class="header-actions">
+        <span id="header-username" class="streak-badge" style="background:var(--accent-glow);color:var(--accent-light)"></span>
+        <span id="header-streak" class="streak-badge"></span>
+      </div>
+    </header>
+
+    <main id="main-content" class="main-content"></main>
+
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-page="home">
+        <span class="nav-icon">🏠</span><span>首页</span>
+      </button>
+      <button class="nav-item" data-page="study">
+        <span class="nav-icon">📝</span><span>学习</span>
+      </button>
+      <button class="nav-item" data-page="stats">
+        <span class="nav-icon">📊</span><span>统计</span>
+      </button>
+      <button class="nav-item" data-page="profile">
+        <span class="nav-icon">👤</span><span>我的</span>
+      </button>
+    </nav>
+  </div>
+</div>
+
+<script src="static/js/app.js"></script>
+</body>
+</html>
