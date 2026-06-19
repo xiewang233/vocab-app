@@ -1,4 +1,4 @@
-const CACHE_NAME = 'xiewang-vocab-v4';
+const CACHE_NAME = 'xiewang-vocab-v5';
 
 // Core assets to pre-cache (relative paths for GitHub Pages compatibility)
 const PRE_CACHE = [
