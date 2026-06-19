@@ -575,10 +575,10 @@ function showFlashcardWord(container) {
       </div>
     </div>
     <div class="quality-buttons" id="quality-btns" style="display:none">
-      <button class="quality-btn wrong" onclick="answerQuality(0)">😰 不认识</button>
-      <button class="quality-btn hard" onclick="answerQuality(1)">🤔 模糊</button>
-      <button class="quality-btn good" onclick="answerQuality(2)">😊 认识</button>
-      <button class="quality-btn easy" onclick="answerQuality(3)">🤩 简单</button>
+      <button class="quality-btn wrong" onclick="handleFlashcardAnswer(0)">😰 不认识</button>
+      <button class="quality-btn hard" onclick="handleFlashcardAnswer(1)">🤔 模糊</button>
+      <button class="quality-btn good" onclick="handleFlashcardAnswer(2)">😊 认识</button>
+      <button class="quality-btn easy" onclick="handleFlashcardAnswer(3)">🤩 简单</button>
     </div>
     <div class="text-center mt-8">
       <button class="btn-sm" style="background:transparent;border:1px solid rgba(255,255,255,0.2);" onclick="event.stopPropagation();toggleFavorite(${w.id})">⭐ 收藏</button>
@@ -636,6 +636,10 @@ async function answerQuality(quality) {
   await checkAchievements();
 
   App.studyIndex++;
+}
+
+async function handleFlashcardAnswer(quality) {
+  await answerQuality(quality);
   showFlashcardWord(document.getElementById('main-content'));
 }
 
