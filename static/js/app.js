@@ -405,6 +405,7 @@ function sm2Update(ef, interval, reps, quality) {
 
 // ==================== Study Setup ====================
 async function renderStudySetup(container) {
+  App.studyMode = 'flashcard';
   const words = await dbGetAll('words');
   const categories = {};
   words.forEach(w => {
@@ -792,10 +793,6 @@ async function pickChoice(pickedId, correctId, el) {
   await answerQuality(correct ? 2 : 0);
 
   setTimeout(() => {
-    App.studyIndex++;
-    // Undo the index increment from answerQuality since we handle it here
-    App.studyIndex--;
-    App.studyIndex++;
     showChoiceWord(document.getElementById('main-content'));
   }, 800);
 }
@@ -869,7 +866,6 @@ function showSpellAnswer(answer) {
 }
 
 function nextSpelling() {
-  App.studyIndex++;
   showSpellingWord(document.getElementById('main-content'));
 }
 
@@ -978,7 +974,6 @@ function checkListen(answer) {
 }
 
 function nextListen() {
-  App.studyIndex++;
   showListenWord(document.getElementById('main-content'));
 }
 
