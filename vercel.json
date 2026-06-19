@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    { "src": "/manifest.json", "dest": "/static/manifest.json" },
+    { "src": "/sw.js", "dest": "/static/sw.js" },
+    { "src": "/static/(.*)", "dest": "/static/$1" },
+    { "src": "/data/(.*)", "dest": "/data/$1" },
+    { "src": "/(.*)", "dest": "/templates/index.html" }
+  ]
+}

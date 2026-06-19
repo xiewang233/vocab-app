@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+*.db
+cookies.txt
+qrcode*.png
+raw/
+.vocab-app/
+.vercel
+.env
