@@ -56,7 +56,7 @@ function dbPut(storeName, data) {
     return new Promise((resolve, reject) => {
       const tx = db.transaction(storeName, 'readwrite');
       const store = tx.objectStore(storeName);
-      const req = 'key' in data ? store.put(data) : store.add(data);
+      const req = store.put(data);
       req.onsuccess = () => resolve(req.result);
       req.onerror = () => reject(req.error);
     });
