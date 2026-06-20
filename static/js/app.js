@@ -507,32 +507,36 @@ async function startFlashcard(container, opts) {
   showFlashcardWord(container);
 }
 
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 async function getStudyWords(category, limit) {
   const today = new Date().toISOString().slice(0, 10);
   const allUws = await dbGetAll('userWords');
   const allWords = await dbGetAll('words');
 
-  // Map wordId -> userWord
+  // Filter by category
+  const pool = category ? allWords.filter(w => w.category === category) : allWords;
+  shuffle(pool);
+
   const uwMap = {};
   allUws.forEach(u => { uwMap[u.wordId] = u; });
 
-  let candidates = [];
+  const dueWords = [];
+  const newWords = [];
+  const MAX_NEW_PER_SESSION = 10; // SM-2: limit new words to avoid overload
 
-  // First: due review words
-  for (const w of allWords) {
-    if (category && w.category !== category) continue;
+  for (const w of pool) {
     const uw = uwMap[w.id];
     if (uw && uw.nextReview && uw.nextReview <= today) {
-      candidates.push({ ...w, ...uw, priority: 1 });
-    }
-  }
-
-  // Second: new words (not studied yet)
-  for (const w of allWords) {
-    if (category && w.category !== category) continue;
-    const uw = uwMap[w.id];
-    if (!uw) {
-      candidates.push({
+      dueWords.push({ ...w, ...uw });
+    } else if (!uw) {
+      newWords.push({
         ...w,
         ease_factor: 2.5,
         interval: 0,
@@ -540,23 +544,21 @@ async function getStudyWords(category, limit) {
         nextReview: today,
         correct_count: 0,
         wrong_count: 0,
-        status: 'new',
-        priority: 2
+        status: 'new'
       });
     }
   }
 
-  // Sort: review first, then new
-  candidates.sort((a, b) => a.priority - b.priority);
+  // Shuffle each pool independently
+  shuffle(dueWords);
+  shuffle(newWords);
 
-  // Take limit + shuffle within priority groups
-  const result = candidates.slice(0, limit * 2);
-  // Fisher-Yates shuffle
-  for (let i = result.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [result[i], result[j]] = [result[j], result[i]];
-  }
+  // Due reviews first, then mix in some new words
+  const newCount = Math.min(MAX_NEW_PER_SESSION, newWords.length, Math.max(0, limit - dueWords.length));
+  const pickedNew = newWords.slice(0, newCount);
 
+  // Combine: due reviews first (memory curve), then new words
+  const result = [...dueWords, ...pickedNew];
   return result.slice(0, limit);
 }
 
