@@ -21,7 +21,7 @@
 <meta name="msapplication-TileColor" content="#0f0f23">
 <meta name="msapplication-TileImage" content="static/icons/icon-144.png">
 
-<link rel="stylesheet" href="static/css/style.css?v=6">
+<link rel="stylesheet" href="static/css/style.css?v=7">
 </head>
 <body>
 
@@ -31,7 +31,7 @@
     <span class="loading-icon">📖</span>
     <h1>邪王真翔</h1>
     <p>背单词小工具</p>
-    <p style="font-size:11px;color:var(--accent-light)">v6.19</p>
+    <p style="font-size:11px;color:var(--accent-light)">v7</p>
     <div class="progress-bar mt-16" style="width:200px">
       <div class="progress-fill" id="loading-progress" style="width:0%"></div>
     </div>
@@ -40,6 +40,7 @@
 </div>
 
 <!-- App -->
+<div id="debug-bar" style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#111;color:#0f0;font-size:10px;padding:2px 4px;display:none;word-break:break-all"></div>
 <div id="app" style="display:none;flex-direction:column;min-height:100dvh">
 
   <!-- Welcome (first use) -->
@@ -88,6 +89,6 @@
   </div>
 </div>
 
-<script src="static/js/app.js?v=6"></script>
+<script src="static/js/app.js?v=7"></script>
 </body>
 </html>

@@ -3,6 +3,17 @@
    All data stored in IndexedDB. No server required.
    ================================================================ */
 
+// ==================== Global Error Trap ====================
+window.onerror = function(msg, url, line, col, err) {
+  const el = document.getElementById('debug-bar');
+  if (el) el.textContent += ' | ERR:' + String(msg).slice(0,60) + '@' + line;
+  return false;
+};
+window.addEventListener('unhandledrejection', function(e) {
+  const el = document.getElementById('debug-bar');
+  if (el) el.textContent += ' | REJ:' + String(e.reason).slice(0,60);
+});
+
 // ==================== IndexedDB Layer ====================
 const DB_NAME = 'vocab_app';
 const DB_VERSION = 1;
@@ -116,6 +127,8 @@ const App = {
 
 // ==================== Init ====================
 async function initApp() {
+  const dbg = document.getElementById('debug-bar');
+  if (dbg) { dbg.style.display = 'block'; dbg.textContent = 'INIT...'; }
   try {
     // Check if words are loaded
     const words = await dbGetAll('words');
@@ -548,6 +561,8 @@ async function getStudyWords(category, limit) {
 }
 
 function showFlashcardWord(container) {
+  const dbg = document.getElementById('debug-bar');
+  if (dbg) dbg.textContent = 'SFW:' + App.studyIndex + '/' + App.studyWords.length;
   if (App.studyIndex >= App.studyWords.length) {
     endStudy(container, 'flashcard');
     return;
@@ -639,8 +654,18 @@ async function answerQuality(quality) {
 }
 
 async function handleFlashcardAnswer(quality) {
-  await answerQuality(quality);
-  showFlashcardWord(document.getElementById('main-content'));
+  const dbg = document.getElementById('debug-bar');
+  try {
+    if (dbg) dbg.textContent = 'HFA:' + quality + ' idx=' + App.studyIndex;
+    await answerQuality(quality);
+    if (dbg) dbg.textContent += '->OK idx=' + App.studyIndex;
+    const mc = document.getElementById('main-content');
+    if (dbg) dbg.textContent += ' mc=' + (mc ? 'Y' : 'N');
+    showFlashcardWord(mc);
+  } catch(e) {
+    if (dbg) dbg.textContent += ' | HFA_ERR:' + String(e).slice(0,40);
+    console.error('HFA error:', e);
+  }
 }
 
 async function updateDailyStats(reviewed) {
